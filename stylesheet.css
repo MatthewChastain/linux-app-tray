@@ -1,0 +1,9 @@
+/* Linux App Tray — stylesheet */
+
+.appindicator-icon {
+  padding: 0;
+}
+
+.appindicator-icon .system-status-icon {
+  padding: 0;
+}

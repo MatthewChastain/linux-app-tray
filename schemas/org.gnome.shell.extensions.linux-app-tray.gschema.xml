@@ -1,0 +1,47 @@
+<schemalist gettext-domain="linux-app-tray">
+  <schema id="org.gnome.shell.extensions.linux-app-tray"
+          path="/org/gnome/shell/extensions/linux-app-tray/">
+    <key name="tray-pos" type="s">
+      <default>'right'</default>
+      <summary>Tray position in panel</summary>
+    </key>
+    <key name="arrow-direction" type="s">
+      <default>'down'</default>
+      <summary>Chevron arrow direction</summary>
+      <description>Direction the chevron icon points: up, down, left, or right.</description>
+    </key>
+    <key name="close-on-activate" type="b">
+      <default>true</default>
+      <summary>Close tray popup after activating an icon</summary>
+      <description>When true, the tray popup collapses after clicking a tray icon.</description>
+    </key>
+    <key name="icon-size" type="i">
+      <default>0</default>
+      <summary>Icon size (0 = panel default)</summary>
+    </key>
+    <key name="icon-opacity" type="i">
+      <default>255</default>
+      <summary>Icon opacity (0-255)</summary>
+    </key>
+    <key name="icon-saturation" type="d">
+      <default>0.0</default>
+      <summary>Icon desaturation (0.0-1.0)</summary>
+    </key>
+    <key name="icon-brightness" type="d">
+      <default>0.0</default>
+      <summary>Icon brightness (-1.0 to 1.0)</summary>
+    </key>
+    <key name="icon-contrast" type="d">
+      <default>0.0</default>
+      <summary>Icon contrast (-1.0 to 1.0)</summary>
+    </key>
+    <key name="legacy-tray-enabled" type="b">
+      <default>false</default>
+      <summary>Enable legacy XEmbed tray icons</summary>
+    </key>
+    <key name="custom-icons" type="a(sss)">
+      <default>[]</default>
+      <summary>Custom icon overrides [indicator-id, icon-name, attention-icon-name]</summary>
+    </key>
+  </schema>
+</schemalist>

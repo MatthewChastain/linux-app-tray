@@ -1,0 +1,14 @@
+{
+  "name": "Linux App Tray",
+  "description": "Windows-style collapsible system tray for GNOME. Groups app indicator icons behind a single chevron button in the panel.",
+  "uuid": "linux-app-tray@linuxapptray",
+  "shell-version": [
+    "45",
+    "46",
+    "47",
+    "48"
+  ],
+  "version": 1,
+  "settings-schema": "org.gnome.shell.extensions.linux-app-tray",
+  "url": "https://github.com/MatthewChastain/linux-app-tray"
+}
