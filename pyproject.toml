@@ -1,0 +1,43 @@
+[build-system]
+requires = ["setuptools>=68", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "linux-app-tray"
+version = "0.1.0"
+description = "A Windows-style expandable system tray for Linux"
+readme = "README.md"
+requires-python = ">=3.10"
+authors = [
+  {name = "Matthew Chastain"},
+]
+license = {text = "MIT"}
+classifiers = [
+  "Development Status :: 3 - Alpha",
+  "Environment :: X11 Applications :: GTK",
+  "Intended Audience :: End Users/Desktop",
+  "License :: OSI Approved :: MIT License",
+  "Operating System :: POSIX :: Linux",
+  "Programming Language :: Python :: 3",
+  "Programming Language :: Python :: 3.10",
+  "Programming Language :: Python :: 3.11",
+  "Topic :: Desktop Environment",
+]
+dependencies = []
+
+[project.optional-dependencies]
+dev = [
+  "pytest>=8.0",
+]
+
+[project.scripts]
+linux-app-tray = "src.main:main"
+
+[tool.setuptools]
+packages = [
+  "src",
+  "src.dbus",
+  "src.notifications",
+  "src.settings",
+  "src.xembed",
+]

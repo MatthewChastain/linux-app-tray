@@ -1,0 +1,9 @@
+[Desktop Entry]
+Type=Application
+Name=Linux App Tray
+Comment=Windows-style expandable tray for Linux
+Exec=linux-app-tray
+Icon=linux-app-tray
+Terminal=false
+Categories=Utility;System;
+StartupNotify=true
