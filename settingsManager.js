@@ -1,5 +1,10 @@
 // Settings manager — provides GSettings access to protocol-layer modules.
-// The protocol files (appIndicator.js etc.) call getDefaultGSettings().
+//
+// Supports two import styles:
+//   import * as SettingsManager from './settingsManager.js';
+//     -> SettingsManager.getDefaultGSettings() / .SettingsManager.initialize()
+//   import {SettingsManager} from './settingsManager.js';
+//     -> SettingsManager.getDefaultGSettings() / .initialize()
 
 let _settings = null;
 
@@ -14,5 +19,9 @@ export class SettingsManager {
 
     static destroy() {
         _settings = null;
+    }
+
+    static getDefaultGSettings() {
+        return _settings;
     }
 }
