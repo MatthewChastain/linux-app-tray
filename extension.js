@@ -153,12 +153,33 @@ export default class LinuxAppTrayExtension extends Extension {
             return;
 
         // Reparent the icon widget into our tray box.
-        // Add the icon DIRECTLY to the BoxLayout — no PopupBaseMenuItem
-        // wrapper. The icon (PanelMenu.Button subclass) is already reactive
-        // and handles its own clicks; wrapping it in a non-reactive menu
-        // item blocks mouse events from reaching it.
         if (icon.get_parent())
             icon.get_parent().remove_child(icon);
+
+        // Wrap the icon in a reactive PopupBaseMenuItem so GNOME Shell's
+        // popup menu event system routes mouse events to it. The popup menu
+        // only dispatches events properly to PopupBaseMenuItem children —
+        // raw actors get bypassed by the menu's key/mouse handling.
+        const wrapper = new PopupMenu.PopupBaseMenuItem({
+            reactive: true,
+            activate: false,      // we handle activation inside the icon
+            can_focus: true,
+            hover: true,
+        });
+        wrapper.add_child(icon);
+
+        // Forward the wrapper's click into the icon's own press handler
+        // (preserves button detection: primary / secondary / middle).
+        wrapper.connect('button-press-event', (_w, event) => {
+            return icon.vfunc_button_press_event
+                ? icon.vfunc_button_press_event(event)
+                : Clutter.EVENT_PROPAGATE;
+        });
+        wrapper.connect('scroll-event', (_w, event) => {
+            return icon.vfunc_scroll_event
+                ? icon.vfunc_scroll_event(event)
+                : Clutter.EVENT_PROPAGATE;
+        });
 
         // Track submenu state so the tray stays open during interaction.
         // Close the tray after a menu item is activated (if the setting is on).
@@ -176,15 +197,19 @@ export default class LinuxAppTrayExtension extends Extension {
 
         // Clean up when the icon is destroyed (app exits).
         icon.connect('destroy', () => {
-            if (this._trayIcons.get(id) === icon) {
-                if (icon.get_parent() === this._trayBox)
-                    this._trayBox.remove_child(icon);
+            const w = this._trayIcons.get(id);
+            if (w) {
+                if (w.get_parent() === this._trayBox)
+                    this._trayBox.remove_child(w);
+                if (!w.is_finalized?.()) {
+                    try { w.destroy(); } catch (_e) {}
+                }
                 this._trayIcons.delete(id);
             }
         });
 
-        this._trayIcons.set(id, icon);
-        this._trayBox.add_child(icon);
+        this._trayIcons.set(id, wrapper);
+        this._trayBox.add_child(wrapper);
     }
 
     // Grab any icons that are already in the panel (e.g. from a previously
