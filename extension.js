@@ -134,11 +134,13 @@ export default class LinuxAppTrayExtension extends Extension {
                 origClose(animate);
         };
 
-        // Add to the panel and remove from menuManager so panel hot-switch
-        // doesn't interfere with our popup.
+        // Add to the panel.  KEEP the menu in menuManager so GNOME Shell
+        // properly grabs input when the popup is open — otherwise clicks
+        // on tray icons inside the popup pass through to whatever is
+        // behind it.  (Panel hot-switch to neighbouring buttons is a minor
+        // cost compared to a totally non-interactive popup.)
         Main.panel.addToStatusArea('linux-app-tray', this._trayButton, 1,
             settings.get_string('tray-pos'));
-        Main.panel.menuManager.removeMenu(this._trayButton.menu);
     }
 
     // -----------------------------------------------------------------------
@@ -161,7 +163,6 @@ export default class LinuxAppTrayExtension extends Extension {
         // Track submenu state so the tray stays open during interaction.
         // Close the tray after a menu item is activated (if the setting is on).
         if (icon.menu) {
-            Main.panel.menuManager.removeMenu(icon.menu);
             icon.menu.connect('open-state-changed', (_menu, isOpen) => {
                 if (this._trayButton)
                     this._trayButton.menu._submenuOpen = isOpen;
